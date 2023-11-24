@@ -1,0 +1,64 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="livecast.agent.repository.mapper.UserMapper">
+    <resultMap id="BaseUserResultMap" type="BaseUser">
+        <id property="id"                       column="id" />
+        <result property="email"                column="email" />
+        <result property="password"             column="password" />
+        <result property="name"                 column="name" />
+        <result property="type"                 column="type" />
+        <result property="enabled"              column="enabled" />
+        <result property="createdDatetime"      column="created_datetime" />
+        <result property="updatedDatetime"      column="updated_datetime" />
+    </resultMap>
+
+    <select id="selectUser" parameterType="String" resultMap="BaseUserResultMap">
+        SELECT id,
+               client_id,
+               email,
+               password,
+               name,
+               type,
+               enabled,
+               created_datetime,
+               updated_datetime
+        FROM mng_users
+        WHERE email = #{value}
+    </select>
+
+    <select id="selectUsersWhereType" parameterType="BaseUserType" resultMap="BaseUserResultMap">
+        SELECT id,
+               client_id,
+               email,
+               password,
+               name,
+               type,
+               enabled,
+               created_datetime,
+               updated_datetime
+        FROM mng_users
+        WHERE type = #{value}
+        ORDER BY created_datetime DESC
+    </select>
+
+    <insert id="insertUser" parameterType="BaseUser">
+        INSERT INTO mng_users (
+            email,
+            client_id,
+            password,
+            name,
+            type,
+            enabled,
+            created_datetime,
+            updated_datetime
+        ) VALUES (
+            #{email},
+            #{clientId},
+            #{password},
+            #{name},
+            #{type},
+            #{enabled},
+            NOW(),
+            NOW()
+        )
+    </insert>
+</mapper>
